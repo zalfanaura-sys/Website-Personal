@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Literaturhaus - Deutsche Literatur mit Texten, Autor:innen, Wortschatz, Quiz und Flashcards." />
+  <title>Literaturhaus</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --paper: #f7f3ee;
+      --ink: #2a211b;
+      --muted: #75695f;
+      --line: rgba(42, 33, 27, .13);
+      --cream: #fffaf3;
+      --sepia: #8b6b52;
+      --leaf: #526753;
+      --rose: #a75d50;
+      --gold: #c9a45f;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(247, 243, 238, .88), rgba(247, 243, 238, .95)),
+        url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2070&auto=format&fit=crop");
+      background-attachment: fixed;
+      background-size: cover;
+      color: var(--ink);
+      font-family: "Inter", sans-serif;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      padding: 22px 72px;
+      background: rgba(247, 243, 238, .88);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+    }
+
+    .logo h1,
+    .hero h2,
+    .section-title h3,
+    .text-card h4,
+    .author-card h4,
+    .modal-title,
+    .quote-box h4 {
+      font-family: "Cormorant Garamond", serif;
+    }
+
+    .logo h1 {
+      font-size: 44px;
+      line-height: .9;
+    }
+
+    .logo p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 22px;
+      color: #342a23;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    nav a {
+      opacity: .86;
+      transition: color .2s ease, opacity .2s ease;
+    }
+
+    nav a:hover {
+      color: var(--sepia);
+      opacity: 1;
+    }
+
+    .login-btn,
+    .primary-btn,
+    .ghost-btn,
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .login-btn,
+    .primary-btn {
+      background: var(--ink);
+      color: #fff;
+      padding: 0 22px;
+      font-weight: 700;
+    }
+
+    .login-btn:hover,
+    .primary-btn:hover,
+    .ghost-btn:hover,
+    .chip:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      min-height: 620px;
+      margin: 32px 60px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(18, 15, 13, .78), rgba(18, 15, 13, .38)),
+        url("https://images.unsplash.com/photo-1511108690759-009324a90311?q=80&w=2069&auto=format&fit=crop");
+      background-position: center;
+      background-size: cover;
+      display: grid;
+      align-items: center;
+      padding: 78px;
+    }
+
+    .hero-content {
+      max-width: 760px;
+      color: #fff;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      margin-bottom: 18px;
+      color: #f4e3cf;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .hero h2 {
+      max-width: 740px;
+      font-size: 86px;
+      line-height: .95;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 26px 0 34px;
+      color: #f4eadf;
+      font-size: 20px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero .primary-btn {
+      background: #f4e3cf;
+      color: var(--ink);
+    }
+
+    .hero .ghost-btn {
+      border: 1px solid rgba(255, 255, 255, .45);
+      color: #fff;
+      padding: 0 20px;
+    }
+
+    .section {
+      padding: 76px 72px 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 30px;
+    }
+
+    .section-title h3 {
+      font-size: 48px;
+      line-height: 1;
+    }
+
+    .section-title p {
+      max-width: 660px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .category-card {
+      min-height: 220px;
+      display: flex;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      isolation: isolate;
+      color: #fff;
+      padding: 24px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 18px 40px rgba(42, 33, 27, .13);
+    }
+
+    .category-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .68));
+    }
+
+    .category-card h4 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 32px;
+    }
+
+    .category-card p {
+      margin-top: 8px;
+      color: #f5eee8;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: rgba(255, 250, 243, .8);
+      color: var(--ink);
+      padding: 0 16px;
+      font-weight: 700;
+    }
+
+    .chip.active {
+      background: var(--leaf);
+      border-color: var(--leaf);
+      color: #fff;
+    }
+
+    .search {
+      width: min(360px, 100%);
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 250, 243, .92);
+      color: var(--ink);
+      padding: 0 18px;
+      outline: none;
+    }
+
+    .text-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .text-card {
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #2f2924;
+      color: #fff;
+      box-shadow: 0 16px 34px rgba(42, 33, 27, .14);
+      isolation: isolate;
+    }
+
+    .text-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image: var(--image);
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+      transition: transform .35s ease;
+    }
+
+    .text-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(rgba(14, 11, 9, .08), rgba(14, 11, 9, .86));
+    }
+
+    .text-card:hover::before {
+      transform: scale(1.08);
+    }
+
+    .text-card-content {
+      padding: 22px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      min-height: 28px;
+      align-items: center;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .18);
+      color: #fffaf3;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .text-card h4 {
+      font-size: 32px;
+      line-height: 1.02;
+      margin-bottom: 8px;
+    }
+
+    .byline {
+      color: #f5dfc8;
+      font-weight: 700;
+      margin-bottom: 13px;
+    }
+
+    .excerpt {
+      color: #f8eee5;
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .small-btn {
+      min-height: 38px;
+      border-radius: 999px;
+      background: #fffaf3;
+      color: var(--ink);
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .small-btn.alt {
+      background: rgba(255, 255, 255, .17);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .34);
+    }
+
+    .authors-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .author-card {
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(255, 250, 243, .94);
+      box-shadow: 0 12px 28px rgba(42, 33, 27, .1);
+    }
+
+    .author-card img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      background: #e8ded2;
+    }
+
+    .author-info {
+      padding: 20px;
+    }
+
+    .author-card h4 {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .author-years {
+      margin: 8px 0 12px;
+      color: var(--sepia);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .author-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .quote-box {
+      margin-top: 56px;
+      background:
+        linear-gradient(rgba(239, 228, 215, .9), rgba(239, 228, 215, .9)),
+        url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2070&auto=format&fit=crop");
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      padding: 46px;
+      text-align: center;
+    }
+
+    .quote-box h4 {
+      font-size: 42px;
+      margin-bottom: 18px;
+    }
+
+    .quote-box p {
+      max-width: 860px;
+      margin: 0 auto;
+      color: #5f544a;
+      font-size: 21px;
+      font-style: italic;
+      line-height: 1.8;
+    }
+
+    footer {
+      margin-top: 80px;
+      padding: 42px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(19, 15, 12, .68);
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: min(1120px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, .32);
+    }
+
+    .modal-hero {
+      min-height: 260px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 34px;
+      background-image: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .76)), var(--modal-image);
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .9);
+      color: var(--ink);
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .modal-title {
+      max-width: 780px;
+      font-size: 52px;
+      line-height: .95;
+      margin: 10px 0 8px;
+    }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(300px, .75fr);
+      gap: 26px;
+      padding: 30px;
+    }
+
+    .reader,
+    .side-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 250, 243, .76);
+      padding: 24px;
+    }
+
+    .reader h5,
+    .side-panel h5 {
+      margin-bottom: 14px;
+      color: var(--leaf);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .reader p {
+      margin-bottom: 14px;
+      color: #3b3029;
+      line-height: 1.82;
+      font-size: 17px;
+    }
+
+    .vocab-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 22px;
+      list-style: none;
+    }
+
+    .vocab-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 9px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .vocab-list strong {
+      color: var(--ink);
+    }
+
+    .flashcard {
+      min-height: 136px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #fff7e9, #e9dcc8);
+      border: 1px solid rgba(139, 107, 82, .22);
+      padding: 22px;
+      text-align: center;
+      color: var(--ink);
+      font-size: 23px;
+      font-weight: 900;
+    }
+
+    .flash-controls,
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .quiz-option {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fffaf3;
+      color: var(--ink);
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .quiz-option.correct {
+      border-color: var(--leaf);
+      background: rgba(82, 103, 83, .13);
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--rose);
+      background: rgba(167, 93, 80, .13);
+    }
+
+    .quiz-result {
+      min-height: 24px;
+      color: var(--leaf);
+      font-weight: 800;
+    }
+
+    .author-modal-card {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+      padding: 30px;
+    }
+
+    .author-modal-card img {
+      width: 220px;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #e8ded2;
+    }
+
+    .author-modal-card p {
+      color: var(--muted);
+      line-height: 1.75;
+      margin: 12px 0;
+    }
+
+    .works {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .work-pill {
+      border-radius: 999px;
+      background: rgba(82, 103, 83, .12);
+      color: var(--leaf);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 1180px) {
+      .site-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 22px 42px;
+      }
+
+      nav {
+        order: 3;
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .category-grid,
+      .authors-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .text-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero,
+      .section {
+        margin-left: 40px;
+        margin-right: 40px;
+      }
+
+      .section {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .site-header {
+        padding: 18px 20px;
+      }
+
+      .logo h1 {
+        font-size: 34px;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .hero {
+        min-height: 520px;
+        margin: 18px 18px 0;
+        padding: 42px 26px;
+      }
+
+      .hero h2 {
+        font-size: 52px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .section {
+        margin: 0;
+        padding: 54px 20px 0;
+      }
+
+      .section-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .category-grid,
+      .text-grid,
+      .authors-grid,
+      .modal-body,
+      .author-modal-card {
+        grid-template-columns: 1fr;
+      }
+
+      .author-modal-card img {
+        width: 100%;
+        height: 320px;
+      }
+
+      .modal {
+        padding: 12px;
+      }
+
+      .modal-title {
+        font-size: 40px;
+      }
+
+      .modal-body,
+      .author-modal-card {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .login-btn {
+        min-height: 38px;
+        padding: 0 15px;
+      }
+
+      .hero {
+        padding: 38px 20px;
+      }
+
+      .hero h2 {
+        font-size: 42px;
+      }
+
+      .category-card,
+      .text-card {
+        min-height: 310px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="logo" href="#">
+      <h1>Literaturhaus</h1>
+      <p>Worte. Geschichten. Inspiration.</p>
+    </a>
+
+    <nav aria-label="Hauptnavigation">
+      <a href="#kategorien">Kategorien</a>
+      <a href="#texte">Texte</a>
+      <a href="#autorinnen">Autor:innen</a>
+      <a href="#lernen">Wortschatz</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <a href="#texte" class="login-btn">Lesen</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">Deutsch B1-B2</span>
+        <h2>Deutsche Literatur zum Lesen, Lernen und Spielen</h2>
+        <p>
+          Entdecke kurze literarische Texte nach Kategorien, lerne neue Woerter,
+          oeffne Autor:innenprofile, beantworte Quizfragen und trainiere mit Flashcards.
+        </p>
+        <div class="hero-actions">
+          <a href="#texte" class="primary-btn">Texte entdecken</a>
+          <a href="#autorinnen" class="ghost-btn">Autor:innen ansehen</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="kategorien">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Vier Sammlungen</span>
+          <h3>Kategorien</h3>
+        </div>
+        <p>Jede Kategorie hat mindestens zehn Texte. Alle Texte sind als kurze B1-B2-Lesetexte formuliert und nennen ihren Autor oder ihre Autorin.</p>
+      </div>
+
+      <div class="category-grid">
+        <article class="category-card" style="background-image:url('https://images.unsplash.com/photo-1519682577862-22b62b24e493?q=80&w=1974&auto=format&fit=crop')">
+          <div>
+            <h4>Gedichte</h4>
+            <p>Gefuehle, Natur, Stadt, Erinnerung und leise Gedanken.</p>
+          </div>
+        </article>
+        <article class="category-card" style="background-image:url('https://images.unsplash.com/photo-1526243741027-444d633d7365?q=80&w=2071&auto=format&fit=crop')">
+          <div>
+            <h4>Romane</h4>
+            <p>Grosse Figuren und bekannte Welten in einfacher Sprache.</p>
+          </div>
+        </article>
+        <article class="category-card" style="background-image:url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2128&auto=format&fit=crop')">
+          <div>
+            <h4>Kurzgeschichten</h4>
+            <p>Kleine Momente mit einer klaren Idee und starker Stimmung.</p>
+          </div>
+        </article>
+        <article class="category-card" style="background-image:url('https://images.unsplash.com/photo-1535905557558-afc4877a26fc?q=80&w=2069&auto=format&fit=crop')">
+          <div>
+            <h4>Klassiker</h4>
+            <p>Zeitlose Werke, modern erklaert und gut lesbar.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="texte">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">40 Lesetexte</span>
+          <h3>Literatur nach Kategorie</h3>
+        </div>
+        <p>Klicke auf einen Text, um den ganzen B1-B2-Text, Wortschatz, Flashcards und ein Quiz zu oeffnen.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="chips" id="categoryFilters" aria-label="Kategorie filtern"></div>
+        <input class="search" id="searchInput" type="search" placeholder="Suche Titel oder Autor:in..." aria-label="Texte suchen">
+      </div>
+
+      <div class="text-grid" id="textGrid"></div>
+    </section>
+
+    <section class="section" id="autorinnen">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Profile</span>
+          <h3>Deutsche Autor:innen</h3>
+        </div>
+        <p>Oeffne ein Profil und lies kurz, warum diese Person fuer die deutsche Literatur wichtig ist.</p>
+      </div>
+
+      <div class="authors-grid" id="authorsGrid"></div>
+    </section>
+
+    <section class="section" id="lernen">
+      <div class="quote-box">
+        <h4>Lernen mit Literatur</h4>
+        <p>
+          Lies zuerst langsam, markiere neue Woerter, pruefe die Bedeutung und beantworte danach das Quiz.
+          So wird Literatur gleichzeitig Sprachtraining und Fantasiereise.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="kontakt">
+    &copy; 2026 Literaturhaus &bull; Created by Zalfa Naura Firdaus
+  </footer>
+
+  <div class="modal" id="textModal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-hero" id="modalHero">
+        <button class="close-btn" type="button" data-close="text" aria-label="Schliessen">&times;</button>
+        <div>
+          <div class="tag-row" id="modalTags"></div>
+          <h3 class="modal-title" id="modalTitle"></h3>
+          <p class="byline" id="modalByline"></p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <article class="reader">
+          <h5>Lesetext B1-B2</h5>
+          <div id="modalText"></div>
+        </article>
+        <aside class="side-panel">
+          <h5>Wortschatz</h5>
+          <ul class="vocab-list" id="vocabList"></ul>
+
+          <h5>Flashcard</h5>
+          <div class="flashcard" id="flashcard">Karte</div>
+          <div class="flash-controls">
+            <button class="small-btn" id="flipCard" type="button">Umdrehen</button>
+            <button class="small-btn alt" id="nextCard" type="button">Naechste</button>
+          </div>
+
+          <h5>Quiz</h5>
+          <p id="quizQuestion"></p>
+          <div class="quiz-options" id="quizOptions"></div>
+          <p class="quiz-result" id="quizResult"></p>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="authorModal" aria-hidden="true">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="authorModalTitle">
+      <button class="close-btn" type="button" data-close="author" aria-label="Schliessen">&times;</button>
+      <div class="author-modal-card" id="authorModalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const images = [
+      "url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=2070&auto=format&fit=crop')",
+      "url('https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1974&auto=format&fit=crop')",
+      "url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2070&auto=format&fit=crop')",
+      "url('https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=1974&auto=format&fit=crop')",
+      "url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2070&auto=format&fit=crop')",
+      "url('https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?q=80&w=1974&auto=format&fit=crop')",
+      "url('https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=2070&auto=format&fit=crop')",
+      "url('https://images.unsplash.com/photo-1511108690759-009324a90311?q=80&w=2069&auto=format&fit=crop')"
+    ];
+
+    const baseVocab = [
+      ["die Sehnsucht", "kerinduan"],
+      ["die Erkenntnis", "pemahaman"],
+      ["der Zweifel", "keraguan"],
+      ["die Erinnerung", "kenangan"],
+      ["die Begegnung", "pertemuan"],
+      ["die Freiheit", "kebebasan"],
+      ["die Verantwortung", "tanggung jawab"],
+      ["die Verwandlung", "perubahan"],
+      ["die Hoffnung", "harapan"],
+      ["der Abschied", "perpisahan"]
+    ];
+
+    const titleImages = {
+      "Der Prozess": "url('https://images.unsplash.com/photo-1589578527966-fdac0f44566c?q=80&w=2070&auto=format&fit=crop')",
+      "Vor dem Gesetz": "url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2069&auto=format&fit=crop')",
+      "Anekdote aus dem letzten preussischen Kriege": "url('https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=2070&auto=format&fit=crop')",
+      "Der Schimmelreiter": "url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2070&auto=format&fit=crop')"
+    };
+
+    const texts = [
+      ["Gedichte", "Wandrers Nachtlied", "Johann Wolfgang von Goethe", `Ueber allen Gipfeln
+Ist Ruh,
+In allen Wipfeln
+Spuerest du
+Kaum einen Hauch;
+Die Voegelein schweigen im Walde.
+Warte nur, balde
+Ruhest du auch.`, "Was ist ueber den Gipfeln?", ["Ruh", "Streit", "Feuer"], "Ruh"],
+      ["Gedichte", "Die Loreley", "Heinrich Heine", `Ich weiss nicht, was soll es bedeuten,
+Dass ich so traurig bin;
+Ein Maerchen aus alten Zeiten,
+Das kommt mir nicht aus dem Sinn.
+
+Die Luft ist kuehl und es dunkelt,
+Und ruhig fliesst der Rhein;
+Der Gipfel des Berges funkelt
+Im Abendsonnenschein.
+
+Die schoenste Jungfrau sitzet
+Dort oben wunderbar,
+Ihr goldnes Geschmeide blitzet,
+Sie kaemmt ihr goldenes Haar.
+
+Sie kaemmt es mit goldenem Kamme,
+Und singt ein Lied dabei;
+Das hat eine wundersame,
+Gewaltige Melodei.`, "An welchem Fluss spielt das Gedicht?", ["Am Rhein", "An der Elbe", "An der Donau"], "Am Rhein"],
+      ["Gedichte", "Der Panther", "Rainer Maria Rilke", `Sein Blick ist vom Voruebergehn der Staebe
+so mued geworden, dass er nichts mehr haelt.
+Ihm ist, als ob es tausend Staebe gaebe
+und hinter tausend Staeben keine Welt.
+
+Der weiche Gang geschmeidig starker Schritte,
+der sich im allerkleinsten Kreise dreht,
+ist wie ein Tanz von Kraft um eine Mitte,
+in der betaeubt ein grosser Wille steht.
+
+Nur manchmal schiebt der Vorhang der Pupille
+sich lautlos auf. Dann geht ein Bild hinein,
+geht durch der Glieder angespannte Stille
+und hoert im Herzen auf zu sein.`, "Was sieht der Panther staendig?", ["Staebe", "Sterne", "Berge"], "Staebe"],
+      ["Gedichte", "Mailied", "Johann Wolfgang von Goethe", `Wie herrlich leuchtet
+Mir die Natur!
+Wie glaenzt die Sonne!
+Wie lacht die Flur!
+
+Es dringen Blueten
+Aus jedem Zweig
+Und tausend Stimmen
+Aus dem Gestraeuch.
+
+Und Freud und Wonne
+Aus jeder Brust.
+O Erd, o Sonne!
+O Glueck, o Lust!`, "Welche Jahreszeit klingt im Gedicht an?", ["Fruehling", "Winter", "Herbst"], "Fruehling"],
+      ["Gedichte", "Mondnacht", "Joseph von Eichendorff", `Es war, als haett der Himmel
+Die Erde still gekuesst,
+Dass sie im Bluetenschimmer
+Von ihm nun traeumen muesst.
+
+Die Luft ging durch die Felder,
+Die Aehren wogten sacht,
+Es rauschten leis die Waelder,
+So sternklar war die Nacht.
+
+Und meine Seele spannte
+Weit ihre Fluegel aus,
+Flog durch die stillen Lande,
+Als floege sie nach Haus.`, "Was breitet im Gedicht die Fluegel aus?", ["Die Seele", "Der Wind", "Der Mond"], "Die Seele"],
+      ["Gedichte", "Der Zauberlehrling", "Johann Wolfgang von Goethe", `Hat der alte Hexenmeister
+Sich doch einmal wegbegeben!
+Und nun sollen seine Geister
+Auch nach meinem Willen leben.
+Seine Wort und Werke
+Merkt ich und den Brauch,
+Und mit Geistesstaerke
+Tu ich Wunder auch.
+
+Walle! walle
+Manche Strecke,
+Dass, zum Zwecke,
+Wasser fliesse
+Und mit reichem, vollem Schwalle
+Zu dem Bade sich ergiesse.`, "Wer ist weggegangen?", ["Der Hexenmeister", "Der Fischer", "Der Koenig"], "Der Hexenmeister"],
+      ["Gedichte", "Haelfte des Lebens", "Friedrich Hoelderlin", `Mit gelben Birnen haenget
+Und voll mit wilden Rosen
+Das Land in den See,
+Ihr holden Schwaene,
+Und trunken von Kuessen
+Tunkt ihr das Haupt
+Ins heilignuechterne Wasser.
+
+Weh mir, wo nehm ich, wenn
+Es Winter ist, die Blumen, und wo
+Den Sonnenschein,
+Und Schatten der Erde?
+Die Mauern stehn
+Sprachlos und kalt, im Winde
+Klirren die Fahnen.`, "Welche Jahreszeit erscheint am Ende?", ["Winter", "Sommer", "Fruehling"], "Winter"],
+      ["Gedichte", "Prometheus", "Johann Wolfgang von Goethe", `Bedecke deinen Himmel, Zeus,
+Mit Wolkendunst!
+Und uebe, dem Knaben gleich,
+Der Disteln koepft,
+An Eichen dich und Bergeshoehn!
+Musst mir meine Erde
+Doch lassen stehn
+Und meine Huette,
+Die du nicht gebaut,
+Und meinen Herd,
+Um dessen Glut
+Du mich beneidest.`, "Wen spricht Prometheus an?", ["Zeus", "Faust", "Nathan"], "Zeus"],
+      ["Gedichte", "An den Mond", "Johann Wolfgang von Goethe", `Fuellest wieder Busch und Tal
+Still mit Nebelglanz,
+Loesest endlich auch einmal
+Meine Seele ganz;
+
+Breitest ueber mein Gefild
+Lindernd deinen Blick,
+Wie des Freundes Auge mild
+Ueber mein Geschick.`, "Wer fuellt Busch und Tal?", ["Der Mond", "Der Regen", "Der Bote"], "Der Mond"],
+      ["Gedichte", "An die Freude", "Friedrich Schiller", `Freude, schoener Goetterfunken,
+Tochter aus Elysium,
+Wir betreten feuertrunken,
+Himmlische, dein Heiligtum.
+Deine Zauber binden wieder,
+Was die Mode streng geteilt;
+Alle Menschen werden Brueder,
+Wo dein sanfter Fluegel weilt.`, "Was werden alle Menschen?", ["Brueder", "Richter", "Fremde"], "Brueder"],
+      ["Romane", "Die Leiden des jungen Werther", "Johann Wolfgang von Goethe", `Wie froh bin ich, dass ich weg bin! Bester Freund, was ist das Herz des Menschen! Dich zu verlassen, den ich so liebe, von dem ich unzertrennlich war, und froh zu sein! Ich weiss, du verzeihst mir's. Waren nicht meine uebrigen Verbindungen recht ausgesucht vom Schicksal, um ein Herz wie das meine zu aengstigen? Die arme Leonore! Und doch war ich unschuldig. Konnt ich dafuer, dass, waehrend die eigensinnigen Reize ihrer Schwester mir eine angenehme Unterhaltung verschafften, dass eine Leidenschaft in dem armen Herzen sich bildete?`, "An wen schreibt Werther?", ["An einen Freund", "An einen Richter", "An einen Lehrer"], "An einen Freund"],
+      ["Romane", "Effi Briest", "Theodor Fontane", `In Front des schon seit Kurfuerst Georg Wilhelm von der Familie von Briest bewohnten Herrenhauses zu Hohen-Cremmen fiel heller Sonnenschein auf die mittagsstille Dorfstrasse, waehrend nach der Park- und Gartenseite hin ein rechtwinklig angebauter Seitenfluegel einen breiten Schatten erst auf einen weiss und gruen quadrierten Fliesengang und dann ueber diesen hinaus auf ein grosses, in seiner Mitte mit einer Sonnenuhr und an seinem Rande mit Canna indica und Rhabarberstauden besetztes Rondell warf.`, "Wo steht das Herrenhaus?", ["In Hohen-Cremmen", "In Berlin", "In Weimar"], "In Hohen-Cremmen"],
+      ["Romane", "Der Prozess", "Franz Kafka", `Jemand musste Josef K. verleumdet haben, denn ohne dass er etwas Boeses getan haette, wurde er eines Morgens verhaftet. Die Koechin der Frau Grubach, seiner Zimmervermieterin, die ihm jeden Tag gegen acht Uhr frueh das Fruehstueck brachte, kam diesmal nicht. Das war noch niemals geschehen. K. wartete noch ein Weilchen, sah von seinem Kopfkissen aus die alte Frau, die ihm gegenueber wohnte und die ihn mit einer an ihr ganz ungewoehnlichen Neugierde beobachtete.`, "Was passiert Josef K.?", ["Er wird verhaftet", "Er gewinnt Geld", "Er reist ab"], "Er wird verhaftet"],
+      ["Romane", "Der gruene Heinrich", "Gottfried Keller", `Ich bin der Sohn eines armen Schulmeisters und wurde in einem kleinen Staedtchen der Schweiz geboren. Meine Mutter war eine stille, fromme Frau, die mit unendlicher Geduld das enge Leben trug, das ihr beschieden war. Von meinem Vater erbte ich die Lust zu sehen und zu lernen, aber auch die Unruhe, die einen Menschen forttreibt, wenn er kaum weiss, wohin. Schon als Kind stand ich gern am Fenster und betrachtete die Strasse, als sei sie der Anfang einer grossen Welt.`, "Wo wurde Heinrich geboren?", ["In der Schweiz", "In Spanien", "In England"], "In der Schweiz"],
+      ["Romane", "Soll und Haben", "Gustav Freytag", `An einem schoenen Fruehlingsmorgen ging Anton Wohlfart durch die Felder seiner Heimat. Er war jung, und alles, was ihm begegnete, schien ihm einen freundlichen Gruss zu bieten. Die Lerchen stiegen singend in die Luft, die Saaten standen gruen, und ueber den Daecher seines Vaterortes lag ein leichter Glanz. Noch wusste er nicht, wie hart die Welt des Handels und der Menschen werden konnte; aber er trug den festen Willen in sich, ehrlich zu arbeiten.`, "Wie heisst die Hauptfigur?", ["Anton Wohlfart", "Josef K.", "Wilhelm Tell"], "Anton Wohlfart"],
+      ["Romane", "Anton Reiser", "Karl Philipp Moritz", `Anton Reisers Vater war ein armer Mann, der mit strenger Frömmigkeit und vieler Unruhe sein Haus regierte. Der Knabe lernte frueh, die Stimmen der Erwachsenen zu fuerchten und zugleich nach einer eigenen inneren Welt zu suchen. Wenn er las, wurde ihm das enge Zimmer weiter, und die Worte gaben ihm einen Raum, in dem er freier atmen konnte. So begann in ihm jener Kampf zwischen Wirklichkeit und Einbildungskraft, der sein ganzes Leben begleiten sollte.`, "Was gibt Anton einen freieren Raum?", ["Das Lesen", "Das Reiten", "Das Kochen"], "Das Lesen"],
+      ["Romane", "Heinrich von Ofterdingen", "Novalis", `Die Eltern lagen schon und schliefen, die Wanduhr schlug ihren einfoermigen Takt, vor den klappernden Fenstern sauste der Wind; abwechselnd wurde die Stube hell von dem Schimmer des Mondes. Der Juengling lag unruhig auf seinem Lager und gedachte des Fremden und seiner Erzaehlungen. Nicht die Schaetze sind es, die ein so unaussprechliches Verlangen in mir geweckt haben, sagte er zu sich selbst; fern ab liegt mir alle Habsucht: aber die blaue Blume sehn ich mich zu erblicken.`, "Wonach sehnt sich Heinrich?", ["Nach der blauen Blume", "Nach einem Schiff", "Nach einem Krug"], "Nach der blauen Blume"],
+      ["Romane", "Die Elixiere des Teufels", "E. T. A. Hoffmann", `Schon als Knabe hatte ich ein besonderes Gefuehl fuer alles Wunderbare. Die dunklen Gaenge des Klosters, der Klang der Glocken und die geheimnisvollen Bilder an den Waenden wirkten maechtig auf meine Seele. Oft glaubte ich, hinter den schweren Tueren ein Fluestern zu hoeren, das nicht von Menschen kam. So mischte sich in mein frommes Leben frueh eine Angst, die mich zugleich erschreckte und anzog.`, "Welcher Ort praegt den Erzähler?", ["Das Kloster", "Der Hafen", "Der Markt"], "Das Kloster"],
+      ["Romane", "Maler Nolten", "Eduard Moerike", `Nolten war von jener stillen Art, die nicht gern von sich selber redet und doch alles, was sie sieht, tief in sich aufnimmt. Wenn er vor einer Landschaft stand, schien ihm jede Linie eine Stimme zu haben. Die Menschen hielten ihn manchmal fuer kalt; aber in Wahrheit bewegte ihn mehr, als er zeigen konnte. Seine Kunst war der Ort, an dem seine verschwiegene Seele Sprache fand.`, "Was gibt Noltens Seele Sprache?", ["Seine Kunst", "Sein Pferd", "Sein Geld"], "Seine Kunst"],
+      ["Romane", "Der Nachsommer", "Adalbert Stifter", `Mein Vater war ein Kaufmann, der mit sorgfaeltiger Ordnung sein Haus und seine Geschaefte fuehrte. In unserer Wohnung herrschte Ruhe, Reinlichkeit und Mass. Schon frueh lernte ich, die Dinge genau zu betrachten: Steine, Pflanzen, Geraete und Bilder. Nichts schien mir zu klein, um nicht Aufmerksamkeit zu verdienen. Aus dieser Gewohnheit erwuchs mir eine Liebe zur stillen Bildung, die nicht laut auftritt und doch das ganze Leben formt.`, "Was lernt der Erzähler frueh?", ["Genau zu betrachten", "Laut zu streiten", "Schnell zu vergessen"], "Genau zu betrachten"],
+      ["Kurzgeschichten", "Vor dem Gesetz", "Franz Kafka", `Vor dem Gesetz steht ein Tuerhueter. Zu diesem Tuerhueter kommt ein Mann vom Lande und bittet um Eintritt in das Gesetz. Aber der Tuerhueter sagt, dass er ihm jetzt den Eintritt nicht gewaehren koenne. Der Mann ueberlegt und fragt dann, ob er also spaeter werde eintreten duerfen. Es ist moeglich, sagt der Tuerhueter, jetzt aber nicht. Da das Tor zum Gesetz offensteht wie immer und der Tuerhueter beiseite tritt, bueckt sich der Mann, um durch das Tor in das Innere zu sehen.`, "Wer steht vor dem Gesetz?", ["Ein Tuerhueter", "Ein Fischer", "Ein Koenig"], "Ein Tuerhueter"],
+      ["Kurzgeschichten", "Eine kaiserliche Botschaft", "Franz Kafka", `Der Kaiser, so heisst es, hat dir, dem Einzelnen, dem jaemmerlichen Untertanen, dem winzig vor der kaiserlichen Sonne in die fernste Ferne gefluechteten Schatten, gerade dir hat der Kaiser von seinem Sterbebett aus eine Botschaft gesendet. Den Boten hat er beim Bett niederknien lassen und ihm die Botschaft ins Ohr gefluestert; so sehr war ihm an ihr gelegen.`, "Wer sendet eine Botschaft?", ["Der Kaiser", "Der Nachbar", "Der Lehrer"], "Der Kaiser"],
+      ["Kurzgeschichten", "Kannitverstan", "Johann Peter Hebel", `Der Mensch hat wohl taeglich Gelegenheit, in Emmendingen und Gundelfingen so gut als in Amsterdam Betrachtungen ueber den Unbestand aller irdischen Dinge anzustellen, wenn er will, und zufrieden zu werden mit seinem Schicksal, wenn auch nicht viel gebratene Tauben fuer ihn in der Luft herumfliegen. Aber auf dem seltsamsten Umweg kam ein deutscher Handwerksbursche in Amsterdam durch den Irrtum zur Wahrheit und zu ihrer Erkenntnis.`, "Wo ist der Handwerksbursche?", ["In Amsterdam", "In Rom", "In Wien"], "In Amsterdam"],
+      ["Kurzgeschichten", "Unverhofftes Wiedersehen", "Johann Peter Hebel", `In Falun in Schweden kuesste vor guten fuenfzig Jahren und mehr ein junger Bergmann seine junge huebsche Braut und sagte zu ihr: Auf Sankt Luciae wird unsere Liebe von des Priesters Hand gesegnet. Dann sind wir Mann und Weib und bauen uns ein eigenes Nestlein. Friede und Liebe soll darin wohnen. Als aber der Pfarrer zum zweiten Mal gerufen hatte: wenn jemand Hindernis wuesste, da meldete sich der Tod.`, "In welchem Land liegt Falun?", ["Schweden", "Frankreich", "Italien"], "Schweden"],
+      ["Kurzgeschichten", "Das Maerchen vom Wolf und den sieben jungen Geisslein", "Brueder Grimm", `Es war einmal eine alte Geiss, die hatte sieben junge Geisslein, und hatte sie lieb, wie eine Mutter ihre Kinder lieb hat. Eines Tages wollte sie in den Wald gehen und Futter holen; da rief sie alle sieben herbei und sprach: Liebe Kinder, ich will hinaus in den Wald, seid auf eurer Hut vor dem Wolf; wenn er hereinkommt, so frisst er euch alle mit Haut und Haar.`, "Vor wem sollen die Geisslein aufpassen?", ["Vor dem Wolf", "Vor dem Mueller", "Vor dem Prinzen"], "Vor dem Wolf"],
+      ["Kurzgeschichten", "Die Sterntaler", "Brueder Grimm", `Es war einmal ein kleines Maedchen, dem war Vater und Mutter gestorben, und es war so arm, dass es kein Kaemmerchen mehr hatte, darin zu wohnen, und kein Bettchen mehr, darin zu schlafen, und endlich gar nichts mehr als die Kleider auf dem Leib und ein Stueckchen Brot in der Hand, das ihm ein mitleidiges Herz geschenkt hatte. Es war aber gut und fromm.`, "Was besitzt das Maedchen noch?", ["Ein Stueckchen Brot", "Ein Schloss", "Ein Pferd"], "Ein Stueckchen Brot"],
+      ["Kurzgeschichten", "Hans im Glueck", "Brueder Grimm", `Hans hatte sieben Jahre bei seinem Herrn gedient, da sprach er zu ihm: Herr, meine Zeit ist herum, nun wollte ich gerne wieder heim zu meiner Mutter; gebt mir meinen Lohn. Der Herr antwortete: Du hast mir treu und ehrlich gedient, wie der Dienst war, so soll der Lohn sein, und gab ihm ein Stueck Gold, das so gross als Hansens Kopf war.`, "Wie lange hat Hans gedient?", ["Sieben Jahre", "Einen Tag", "Drei Monate"], "Sieben Jahre"],
+      ["Kurzgeschichten", "Die drei Sprachen", "Brueder Grimm", `In der Schweiz lebte einmal ein alter Graf, der hatte einen einzigen Sohn, aber der war dumm und konnte nichts lernen. Da sprach der Vater: Hoere, mein Sohn, ich bringe nichts in deinen Kopf, ich mag es anfangen, wie ich will. Du musst fort von hier, ich will dich einem beruehmten Meister uebergeben, der soll es mit dir versuchen.`, "Wo lebt der alte Graf?", ["In der Schweiz", "In Preussen", "In Spanien"], "In der Schweiz"],
+      ["Kurzgeschichten", "Anekdote aus dem letzten preussischen Kriege", "Heinrich von Kleist", `Bei Jena, nach der Schlacht, traf ein franzoesischer Offizier einen preussischen Soldaten, der, von seiner Truppe getrennt, noch immer sein Gewehr trug. Der Franzose fragte ihn, warum er nicht die Waffen niederlege. Der Soldat antwortete ruhig, er habe keinen Befehl dazu erhalten. Diese einfache Antwort machte mehr Eindruck als viele grosse Reden, denn sie zeigte Pflichtgefuehl mitten im Unglueck.`, "Was traegt der Soldat noch?", ["Sein Gewehr", "Eine Geige", "Einen Korb"], "Sein Gewehr"],
+      ["Kurzgeschichten", "Der blonde Eckbert", "Ludwig Tieck", `In einer Gegend des Harzes wohnte ein Ritter, den man den blonden Eckbert nannte. Er war ungefaehr vierzig Jahre alt, kaum von mittler Groesse, und kurze, hellblonde Haare lagen schlicht und glatt an seinem bleichen, eingefallenen Gesichte. Er lebte sehr ruhig fuer sich und wurde niemals in den Fehden seiner Nachbarn verwickelt.`, "In welcher Gegend wohnt Eckbert?", ["Im Harz", "Am Rhein", "In Hamburg"], "Im Harz"],
+      ["Klassiker", "Faust I", "Johann Wolfgang von Goethe", `Habe nun, ach! Philosophie,
+Juristerei und Medizin,
+Und leider auch Theologie
+Durchaus studiert, mit heissem Bemuehn.
+Da steh ich nun, ich armer Tor!
+Und bin so klug als wie zuvor;
+Heisse Magister, heisse Doktor gar,
+Und ziehe schon an die zehen Jahr
+Herauf, herab und quer und krumm
+Meine Schueler an der Nase herum.`, "Was hat Faust studiert?", ["Philosophie, Juristerei, Medizin und Theologie", "Nur Musik", "Nur Mathematik"], "Philosophie, Juristerei, Medizin und Theologie"],
+      ["Klassiker", "Wilhelm Tell", "Friedrich Schiller", `Durch diese hohle Gasse muss er kommen,
+Es fuehrt kein andrer Weg nach Kuessnacht. Hier
+Vollend ich's. Die Gelegenheit ist guenstig.
+Dort der Holunderstrauch verbirgt mich ihm,
+Von dort herab kann ihn mein Pfeil erlangen,
+Des Weges Enge wehret den Verfolgern.
+Mach deine Rechnung mit dem Himmel, Vogt,
+Fort musst du, deine Uhr ist abgelaufen.`, "Womit will Tell handeln?", ["Mit Pfeil und Bogen", "Mit einem Buch", "Mit einer Trommel"], "Mit Pfeil und Bogen"],
+      ["Klassiker", "Nathan der Weise", "Gotthold Ephraim Lessing", `Vor grauen Jahren lebt' ein Mann im Osten,
+Der einen Ring von unschaetzbarem Wert
+Aus lieber Hand besass. Der Stein war ein Opal,
+Der hundert schoene Farben spielte,
+Und hatte die geheime Kraft, vor Gott
+Und Menschen angenehm zu machen,
+Wer in dieser Zuversicht ihn trug.`, "Welcher Gegenstand ist wichtig?", ["Ein Ring", "Ein Schwert", "Ein Spiegel"], "Ein Ring"],
+      ["Klassiker", "Die Raeuber", "Friedrich Schiller", `Franz. Aber ist Euch auch wohl, Vater? Ihr seht so blass.
+Der alte Moor. Ganz wohl, mein Sohn. Was hattest du mir zu sagen?
+Franz. Die Post ist angekommen. Ein Brief von unserm Korrespondenten in Leipzig.
+Der alte Moor. Nachrichten von meinem Sohne Karl?
+Franz. Hm! Hm! So ist es. Aber ich fuerchte, ich fuerchte, ich weiss nicht, ob ich ihn Euch geben darf.`, "Von wem gibt es Nachrichten?", ["Von Karl", "Von Nathan", "Von Gretchen"], "Von Karl"],
+      ["Klassiker", "Emilia Galotti", "Gotthold Ephraim Lessing", `Der Prinz. Klagen, nichts als Klagen! Bittschriften, nichts als Bittschriften! Die traurigen Geschaefte; und man beneidet uns noch! Das glaub ich; wenn wir allen helfen koennten: dann waeren wir zu beneiden. Emilia? Eine Emilia? Aber eine Emilia Bruneschi, nicht Galotti. Nicht Emilia Galotti!`, "Welche Art von Papieren sieht der Prinz?", ["Bittschriften", "Landkarten", "Notenblaetter"], "Bittschriften"],
+      ["Klassiker", "Maria Stuart", "Friedrich Schiller", `Elisabeth. Man ueberhaeuft mich mit Geschaeften, Davison.
+Davison. Gnaedige Koenigin, die Staatsgeschäfte dulden keinen Aufschub.
+Elisabeth. Kein Aufschub! Dieses Wort verfolgt mich. Die Krone drueckt schwerer, als die Menge glaubt; wer herrscht, gehoert nicht mehr sich selbst.`, "Was drueckt schwer?", ["Die Krone", "Das Buch", "Der Mantel"], "Die Krone"],
+      ["Klassiker", "Der Schimmelreiter", "Theodor Storm", `Was ich zu berichten beabsichtige, ist mir vor reichlich einem halben Jahrhundert im Hause meiner Urgrossmutter, der alten Frau Senator Feddersen, kund geworden, waehrend ich, an ihrem Lehnstuhl sitzend, mich mit dem Lesen eines in blaue Pappe eingebundenen Zeitschriftenheftes beschaeftigte. Noch fuehle ich es wie heute, wie die alte Hand zuweilen liebkosend ueber das Haar ihres Urenkels hinglitt.`, "Bei wem hoert der Erzähler die Geschichte?", ["Bei der Urgrossmutter", "Bei einem Richter", "Bei einem Fischer"], "Bei der Urgrossmutter"],
+      ["Klassiker", "Kleider machen Leute", "Gottfried Keller", `An einem unfreundlichen Novembertage wanderte ein armes Schneiderlein auf der Landstrasse nach Goldach, einer kleinen reichen Stadt, die nur wenige Stunden von Seldwyla entfernt ist. Der Schneider trug in seiner Tasche nichts als einen Fingerhut, welchen er, in Ermangelung irgendeiner Muenze, unaufhoerlich zwischen den Fingern drehte, wenn er der Kaelte wegen die Haende in die Hosen steckte.`, "Wohin wandert der Schneider?", ["Nach Goldach", "Nach Rom", "Nach Prag"], "Nach Goldach"],
+      ["Klassiker", "Der zerbrochne Krug", "Heinrich von Kleist", `Licht. Ei, was zum Henker, sagt, Gevatter Adam!
+Was ist mit Euch geschehn? Wie seht Ihr aus?
+Adam. Ja, seht. Zum Straucheln braucht's doch nichts als Fuesse.
+Auf diesem glatten Boden, ist ein Strauch hier?
+Gestrauchelt bin ich hier; denn jeder traegt
+Den leid'gen Stein zum Anstoss in sich selbst.`, "Wer sieht seltsam aus?", ["Adam", "Tell", "Werther"], "Adam"],
+      ["Klassiker", "Woyzeck", "Georg Buechner", `Woyzeck. Ja Andres; der Platz ist verflucht. Siehst du den lichten Streif da ueber das Gras hin, wo die Schwaemme so nachwachsen? Da rollt abends der Kopf. Hob ihn einmal einer auf, meint', es waer ein Igel. Drei Tage und drei Naechte, und er lag auf den Hobelspaenen. Andres, das waren die Freimaurer, ich hab's!`, "Wen spricht Woyzeck an?", ["Andres", "Nathan", "Effi"], "Andres"]
+    ].map((item, index) => ({
+      id: index,
+      category: item[0],
+      title: item[1],
+      author: item[2],
+      body: item[3],
+      question: item[4],
+      options: item[5],
+      answer: item[6],
+      image: titleImages[item[1]] || images[index % images.length],
+      vocab: [baseVocab[index % baseVocab.length], baseVocab[(index + 3) % baseVocab.length], baseVocab[(index + 6) % baseVocab.length]]
+    }));
+
+    const authors = [
+      {
+        name: "Johann Wolfgang von Goethe",
+        years: "1749-1832",
+        photo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Goethe%20%28Stieler%201828%29.jpg",
+        bio: "Goethe ist eine der wichtigsten Stimmen der deutschen Literatur. Er schrieb Gedichte, Dramen und Romane. Seine Werke zeigen starke Gefuehle, Natur, Bildung und die Suche nach Sinn.",
+        works: ["Faust", "Werther", "Wandrers Nachtlied", "Prometheus"]
+      },
+      {
+        name: "Friedrich Schiller",
+        years: "1759-1805",
+        photo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Friedrich%20Schiller%20by%20Ludovike%20Simanowiz.jpg",
+        bio: "Schiller schrieb Dramen und Gedichte ueber Freiheit, Moral und Menschlichkeit. Seine Figuren stehen oft vor schweren Entscheidungen zwischen Pflicht, Macht und Gewissen.",
+        works: ["Wilhelm Tell", "Die Raeuber", "Maria Stuart", "An die Freude"]
+      },
+      {
+        name: "Heinrich Heine",
+        years: "1797-1856",
+        photo: "https://commons.wikimedia.org/wiki/Special:FilePath/Heinrich_Heine-Oppenheim.jpg?width=512",
+        bio: "Heine verbindet romantische Bilder mit Ironie und politischem Blick. Seine Sprache wirkt oft leicht, aber dahinter stehen Kritik, Sehnsucht und genaue Beobachtung.",
+        works: ["Die Loreley", "Deutschland. Ein Wintermaerchen", "Buch der Lieder"]
+      },
+      {
+        name: "Franz Kafka",
+        years: "1883-1924",
+        photo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kafka1906_cropped.jpg",
+        bio: "Kafka schrieb ueber Angst, Schuld und undurchsichtige Macht. Seine Texte wirken ruhig und fremd zugleich. Das Wort kafkaesk beschreibt heute Situationen, die absurd und bedrueckend sind.",
+        works: ["Der Prozess", "Die Verwandlung", "Das Schloss"]
+      },
+      {
+        name: "Hermann Hesse",
+        years: "1877-1962",
+        photo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Hermann%20Hesse%202.jpg",
+        bio: "Hesse schrieb ueber Selbstsuche, innere Konflikte und spirituelle Fragen. Viele seiner Figuren suchen einen eigenen Weg zwischen Gesellschaft und persoenlicher Freiheit.",
+        works: ["Der Steppenwolf", "Demian", "Siddhartha"]
+      },
+      {
+        name: "Thomas Mann",
+        years: "1875-1955",
+        photo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Thomas%20Mann%201929.jpg",
+        bio: "Thomas Mann beobachtete Familien, Gesellschaft und Kunst mit grosser Genauigkeit. Seine Romane zeigen oft, wie persoenliche Wuensche und soziale Erwartungen zusammenstossen.",
+        works: ["Buddenbrooks", "Der Zauberberg", "Tonio Kroeger"]
+      },
+      {
+        name: "Rainer Maria Rilke",
+        years: "1875-1926",
+        photo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rainer%20Maria%20Rilke%201900.jpg",
+        bio: "Rilke ist bekannt fuer intensive Gedichte ueber Dinge, Tiere, Engel und innere Erfahrungen. Seine Sprache macht stille Beobachtungen sehr tief und musikalisch.",
+        works: ["Der Panther", "Duineser Elegien", "Sonette an Orpheus"]
+      },
+      {
+        name: "Bertolt Brecht",
+        years: "1898-1956",
+        photo: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Bundesarchiv%20Bild%20183-W0409-300%2C%20Bertolt%20Brecht.jpg",
+        bio: "Brecht wollte, dass Theater zum Denken anregt. Seine Texte zeigen soziale Fragen, Macht und Verantwortung. Er benutzte klare Sprache, Lieder und Distanz zum Geschehen.",
+        works: ["Mutter Courage", "Der gute Mensch von Sezuan", "Leben des Galilei"]
+      }
+    ];
+
+    const categoryFilters = document.querySelector("#categoryFilters");
+    const textGrid = document.querySelector("#textGrid");
+    const searchInput = document.querySelector("#searchInput");
+    const authorsGrid = document.querySelector("#authorsGrid");
+    const textModal = document.querySelector("#textModal");
+    const authorModal = document.querySelector("#authorModal");
+    let activeCategory = "Alle";
+    let activeText = null;
+    let flashIndex = 0;
+    let flashFlipped = false;
+
+    function renderFilters() {
+      categoryFilters.innerHTML = "";
+      ["Alle", "Gedichte", "Romane", "Kurzgeschichten", "Klassiker"].forEach(category => {
+        const button = document.createElement("button");
+        button.className = "chip" + (category === activeCategory ? " active" : "");
+        button.type = "button";
+        button.textContent = category;
+        button.addEventListener("click", () => {
+          activeCategory = category;
+          renderFilters();
+          renderTexts();
+        });
+        categoryFilters.appendChild(button);
+      });
+    }
+
+    function renderTexts() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      textGrid.innerHTML = "";
+      const filtered = texts.filter(text => {
+        const categoryOk = activeCategory === "Alle" || text.category === activeCategory;
+        const searchOk = !keyword || `${text.title} ${text.author}`.toLowerCase().includes(keyword);
+        return categoryOk && searchOk;
+      });
+
+      filtered.forEach(text => {
+        const card = document.createElement("article");
+        card.className = "text-card";
+        card.style.setProperty("--image", text.image);
+        card.innerHTML = `
+          <div class="text-card-content">
+            <div class="tag-row">
+              <span class="tag">${text.category}</span>
+              <span class="tag">B1-B2</span>
+            </div>
+            <h4>${text.title}</h4>
+            <p class="byline">by ${text.author}</p>
+            <p class="excerpt">${text.body.slice(0, 150)}...</p>
+            <div class="card-actions">
+              <button class="small-btn" type="button">Text oeffnen</button>
+              <button class="small-btn alt" type="button">Quiz</button>
+            </div>
+          </div>
+        `;
+        card.querySelectorAll("button").forEach(button => button.addEventListener("click", () => openText(text.id)));
+        textGrid.appendChild(card);
+      });
+    }
+
+    function renderAuthors() {
+      authorsGrid.innerHTML = "";
+      authors.forEach((author, index) => {
+        const card = document.createElement("article");
+        card.className = "author-card";
+        card.innerHTML = `
+          <img src="${author.photo}" alt="Portraet von ${author.name}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=1200&auto=format&fit=crop';">
+          <div class="author-info">
+            <h4>${author.name}</h4>
+            <p class="author-years">${author.years}</p>
+            <p>${author.bio.slice(0, 138)}...</p>
+            <div class="card-actions">
+              <button class="small-btn" type="button">Profil oeffnen</button>
+            </div>
+          </div>
+        `;
+        card.querySelector("button").addEventListener("click", () => openAuthor(index));
+        authorsGrid.appendChild(card);
+      });
+    }
+
+    function openText(id) {
+      activeText = texts.find(text => text.id === id);
+      flashIndex = 0;
+      flashFlipped = false;
+      document.querySelector("#modalHero").style.setProperty("--modal-image", activeText.image);
+      document.querySelector("#modalTags").innerHTML = `<span class="tag">${activeText.category}</span><span class="tag">Level B1-B2</span>`;
+      document.querySelector("#modalTitle").textContent = activeText.title;
+      document.querySelector("#modalByline").textContent = `by ${activeText.author}`;
+      document.querySelector("#modalText").innerHTML = activeText.body
+        .split("\n\n")
+        .map(paragraph => `<p>${paragraph.replace(/\n/g, "<br>")}</p>`)
+        .join("");
+      document.querySelector("#vocabList").innerHTML = activeText.vocab.map(pair => `<li><strong>${pair[0]}</strong><span>${pair[1]}</span></li>`).join("");
+      document.querySelector("#quizQuestion").textContent = activeText.question;
+      document.querySelector("#quizOptions").innerHTML = activeText.options.map(option => `<button class="quiz-option" type="button">${option}</button>`).join("");
+      document.querySelector("#quizResult").textContent = "";
+      document.querySelectorAll(".quiz-option").forEach(optionButton => {
+        optionButton.addEventListener("click", () => checkAnswer(optionButton));
+      });
+      updateFlashcard();
+      textModal.classList.add("open");
+      textModal.setAttribute("aria-hidden", "false");
+    }
+
+    function updateFlashcard() {
+      const pair = activeText.vocab[flashIndex];
+      document.querySelector("#flashcard").textContent = flashFlipped ? pair[1] : pair[0];
+    }
+
+    function checkAnswer(button) {
+      document.querySelectorAll(".quiz-option").forEach(option => {
+        option.classList.remove("correct", "wrong");
+        if (option.textContent === activeText.answer) option.classList.add("correct");
+      });
+      if (button.textContent === activeText.answer) {
+        document.querySelector("#quizResult").textContent = "Richtig! Sehr gut gelesen.";
+      } else {
+        button.classList.add("wrong");
+        document.querySelector("#quizResult").textContent = `Fast! Die richtige Antwort ist: ${activeText.answer}.`;
+      }
+    }
+
+    function openAuthor(index) {
+      const author = authors[index];
+      document.querySelector("#authorModalContent").innerHTML = `
+        <img src="${author.photo}" alt="Portraet von ${author.name}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=1200&auto=format&fit=crop';">
+        <div>
+          <span class="eyebrow">Autor:innenprofil</span>
+          <h3 class="modal-title" id="authorModalTitle">${author.name}</h3>
+          <p class="author-years">${author.years}</p>
+          <p>${author.bio}</p>
+          <h5 style="margin-top:18px;color:var(--leaf);font-size:14px;text-transform:uppercase;letter-spacing:.07em;">Bekannte Werke</h5>
+          <div class="works">${author.works.map(work => `<span class="work-pill">${work}</span>`).join("")}</div>
+        </div>
+      `;
+      authorModal.classList.add("open");
+      authorModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal(kind) {
+      const modal = kind === "author" ? authorModal : textModal;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    document.querySelector("#flipCard").addEventListener("click", () => {
+      flashFlipped = !flashFlipped;
+      updateFlashcard();
+    });
+
+    document.querySelector("#nextCard").addEventListener("click", () => {
+      flashIndex = (flashIndex + 1) % activeText.vocab.length;
+      flashFlipped = false;
+      updateFlashcard();
+    });
+
+    document.querySelectorAll("[data-close]").forEach(button => {
+      button.addEventListener("click", () => closeModal(button.dataset.close));
+    });
+
+    [textModal, authorModal].forEach(modal => {
+      modal.addEventListener("click", event => {
+        if (event.target === modal) {
+          modal.classList.remove("open");
+          modal.setAttribute("aria-hidden", "true");
+        }
+      });
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeModal("text");
+        closeModal("author");
+      }
+    });
+
+    searchInput.addEventListener("input", renderTexts);
+
+    renderFilters();
+    renderTexts();
+    renderAuthors();
+  </script>
+</body>
+</html>
